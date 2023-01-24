@@ -38,6 +38,7 @@ function Home() {
         return () => clearInterval(interval)
     }, []);
 
+    const logout = () => setToken(false)
 
     return (
 
@@ -45,9 +46,12 @@ function Home() {
             <MDBNavbar light bgColor='light'>
                 <MDBContainer fluid>
                     <MDBNavbarBrand href='#'>Logo</MDBNavbarBrand>
-                    <Button variant="secondary" size="lg" onClick={() => setOpen(!open)}>
-                        Write Messege
-                    </Button>
+                    <div>
+                        <Button variant="secondary" size="lg" onClick={() => setOpen(!open)}>
+                            Write Messege
+                        </Button>
+                        <Button variant="link" onClick={logout} >logout</Button>
+                    </div>
                 </MDBContainer>
             </MDBNavbar>
             <Navbar bg="light" variant="light">

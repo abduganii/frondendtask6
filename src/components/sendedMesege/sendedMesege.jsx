@@ -8,18 +8,18 @@ function MesesageSended() {
     const [data, setData] = useState()
     const navigate = useNavigate()
     const [view, setView] = useState(0)
-    useEffect(() => {
-        fetch(`https://backend6.onrender.com/messegeSended`, {
-            headers: { userid: token, "Content-Type": "application/json", },
+
+    fetch(`https://backend6.onrender.com/messegeSended`, {
+        headers: { userid: token, "Content-Type": "application/json", },
+    })
+        .then(res => res.json())
+        .then(data => {
+            setData(data)
+            if (data?.status == 500) {
+                setToken(false)
+            }
         })
-            .then(res => res.json())
-            .then(data => {
-                setData(data)
-                if (data?.status == 500) {
-                    setToken(false)
-                }
-            })
-    }, []);
+        
     const deleteMessege = (e) => {
         fetch(`https://backend6.onrender.com/messege/${e}`, {
             method: "DELETE",
