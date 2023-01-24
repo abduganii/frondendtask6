@@ -1,6 +1,6 @@
 
 import { useRef, useState } from "react";
-import { Form, Modal, Button } from "react-bootstrap";
+import { Form, Modal, Button, Alert } from "react-bootstrap";
 import useToken from "../../Hooks/useToken";
 
 function MessegeFrom() {
@@ -8,6 +8,7 @@ function MessegeFrom() {
     const [userS, setUserS] = useState()
     const [username, setUsername] = useState()
     const [recipientId, setRecipientId] = useState()
+    const [status, setStatus] = useState()
     const title = useRef()
     const message = useRef()
     const [open, setOpen] = useState(true)
@@ -28,7 +29,12 @@ function MessegeFrom() {
                 });
                 const data = await res.json();
 
-                setOpen(false)
+                console.log(data.status)
+                setStatus(data.status)
+
+                if (data.status === 200) {
+                    setOpen(false)
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -46,6 +52,7 @@ function MessegeFrom() {
             })
                 .then(res => res.json())
                 .then(data => {
+
                     setUserS(data.payload)
                 })
         }
@@ -61,7 +68,10 @@ function MessegeFrom() {
 
                 <Form.Group className="mb-3" controlId="formBasicEmail">
 
-                    <Form.Control type="text" placeholder="Recipientl" value={username} onChange={(e) => setUsername(e.target.value)} onKeyUp={searchInput} />
+                    <Form.Control type="text" placeholder="Recipientl" value={username} onChange={(e) => {
+                        setStatus(0)
+                        setUsername(e.target.value)
+                    }} onKeyUp={searchInput} />
 
                     {userS?.map(e => (
                         <div key={e?.id} className='dropListdaws'>
@@ -72,6 +82,8 @@ function MessegeFrom() {
                             }}>{e?.name}</p>
                         </div>
                     ))}
+
+                    {status === 500 ? <p style={{ "color": "red" }}> user not found</p> : ""}
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -84,6 +96,12 @@ function MessegeFrom() {
                     Send
                 </Button>
             </Form> : ""}
+
+            {
+                status === 200 ? <Alert className="alerwpa" key={"success"} variant={"success"}>
+                    massege sended
+                </Alert> : ""
+            }
         </>
     )
 }
